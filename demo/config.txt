@@ -1,0 +1,3 @@
+sportcar=com.example.demo.SportCar
+truck=com.example.demo.Truck
+engine=com.example.demo.Engine
