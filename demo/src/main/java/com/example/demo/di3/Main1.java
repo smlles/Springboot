@@ -39,7 +39,7 @@ class AppContext {
 		doComponentScan();
 
 	}
-
+	
 	private void doComponentScan() {
 		try {
 			// 1. 패키지 내의 클래스 목록을 가져온다.
@@ -91,6 +91,21 @@ class AppContext {
 	Object getBean(String key) {
 		return map.get(key);
 	}
+	
+	
+	//클래스의 타입으로 찾기
+	//크래스의 정보 자체를 매개변수로 받는다.
+	Object getBean(Class clazz) {
+		//map.values() : map의 value들을 컬렉션으로 저장
+		for(Object obj : map.values()){
+			//객체 obj가 clazz에 속하는가? obj instanceof clazz
+			if(clazz.isInstance(obj)) {
+				return obj;
+			}
+			
+		}
+		return null;
+	}
 
 }
 
@@ -103,8 +118,16 @@ public class Main1 {
 
 		Engine engine = (Engine) ac.getBean("engine");
 		System.out.println("engine = " + engine);
-		//실전에서는 @ComponentScan 어노테이션 하나로 정리된다
-		//내부에서는 이런 원리로 돌아감
+		// 실전에서는 @ComponentScan 어노테이션 하나로 정리된다
+		// 내부에서는 이런 원리로 돌아감
+		
+		//타입을 통해서 map에 저장된 객체 찾기
+		Car car2 = (Car)ac.getBean(Car.class);
+		System.out.println("car2 = "+car2);
+		
+		//싱글 톤 패턴
+		//스프링이 직접 관리하는 클래스는 메모리에 단 한번만 올라간다.
+		//사용 시에는 메모리에 올라간 객체를 받아서 사용한다.
 	}
 
 }

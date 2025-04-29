@@ -1,0 +1,53 @@
+//플러그인 
+//gradle에서 빌드 작업을 확장하고 자동화시켜주는 기능
+//플러그인을 통해 다양한 기능을 추가 할 수 있는데, 프로젝트에 필요한 빌드 작업이나 설정을
+//플러그인을 통해 간단하게 적용할 수 있다.
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+//프로젝트의 그룹 ID를 설정한다.
+group = 'com.example'
+//프로젝트 버전 설정
+//SNAPSHOT : 아직 완성되지 않은 버전이라는 의미
+version = '0.0.1-SNAPSHOT'
+//자바 버전 설정
+//그래들은 toolchain을 통해 명시적으로 자바 버전을 관리 할 수 있다.
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+//컴파일 할 때 사용되는 의존성 설정
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+//그래들이 라이브러리를 다운로드 하는 곳을 레파지토리라고 한다.
+//Maven Central을 주로 사용한다.
+repositories {
+	mavenCentral()
+}
+
+//의존성 설정
+//implementation : 프로젝트에서 런타임에 사용될 라이브러리를 정의
+//complieOnly : 컴파일 시에만 필요한 라이브러리
+//runtimeOnly : 런타임에만 필요한 라이브러리를 정의한다.
+//annotationProcessor : 컴파일타임에 어노테이션을 처리하는 라이브러리
+//testImplementation : 테스트 코드를 실행할 때 필요한 라이브러리
+//testRuntimeOnly : 테스트 환경에서만 사용 할 수 있는 라이브러리
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+//테스트 설정
+//Junit 플랫폼으로 테스트 실행하도록 설정
+tasks.named('test') {
+	useJUnitPlatform()
+}
