@@ -39,8 +39,9 @@ public class TestController {
 	// 배열을 통해 여러개의 요청 URL를 받을 수 있다.
 	@GetMapping("/users/{id}")
 	public String getUserById(@PathVariable(name = "id", required = false) String userId) {
-		return "User Id : " + userId;
-	}
+		return "User Id : " + userId;//value = "이름" : 경로 변수 이름 명시, 이름이 같으면 생략가능
+	}						//required = t/f 해당 경로 필수 여부, 기본 true 딱히 false를 쓰진 않음
+	
 
 	@GetMapping("/users/{userId}/orders/{orderId}")
 	public String getOrderByUserAndOrderId(@PathVariable("userId") long id, @PathVariable("orderId") long orderId) {
@@ -50,10 +51,10 @@ public class TestController {
 	// 정규식을 써서 변수 형식을 제한할 수 있다.
 	@GetMapping("/users/{userId:[0-9]{3}}")
 	public String getOrderByUser(@PathVariable("userId") long id) {
-		return "User ID : " + id;
+		return "User ID : " + id; //ㄴ url 경로에서 값추출
 	}
 
-	// 쿼리스트링의 key와 매개변수의 변수명이 일치하면 value값을 안줘도 된다.
+	// 쿼리스트링의 key와 매개변수의 변수명이 일치하면 value값을 안줘도 된다. -> GET일때만
 	// 일치한다면 말이지
 	@GetMapping("/users")
 	// public String getUserById(@RequestParam(required=false) long id)
@@ -61,9 +62,9 @@ public class TestController {
 	// public String getUserById(@RequestParam(defaultValue=0) long id)
 	// 값이 넘어오지 않았을 때, 기본값을 설정 할 수 있다.
 	public String getUserById(@RequestParam(value = "id", defaultValue = "0") long id) {
-		return "User ID : " + id;
-	}
-
+		return "User ID : " + id; //value = "이름" : 파라미터의 이름 명시, 이름이 같으면 생략가능
+	}							//defaultvalue ="값" 요청에 파라미터가 없다면 기본값지정
+								//required = t/f 해당파라미터 필수 여부, 기본 true
 	@GetMapping("/search")
 	public String serch(@RequestParam("query") String query, @RequestParam("page") int page) {
 		return "Search query : " + query + " , page : " + page;
@@ -80,15 +81,17 @@ public class TestController {
 	//{"id"=123, "message":"hello ?"} -> 키값이 일치해야함
 	public String testRequestBody(@RequestBody TestRequestBodyDTO dto) {
 		return "ID : "+dto.getId() + ", Message : "+dto.getMessage();
-	}
+	}//post,put요청은 url에 표시가 안된다. HTTP요청의 본문에 담긴 데이터를 
+	//자바 객체로 변환하여 컨트롤러 메서드의 매개변수로 전달 할 때 사용하는 어노테이션
+	//http 요청 본문 처리 : JSON이나 XML형식을 스프링이 자동으로 자바 객체로 변환
 	
-	@GetMapping("/testResponseBody")
+	@GetMapping("/testResponseBody") 
 	public ResponseDTO<String> testResponseBody(){
 		List<String> list = Arrays.asList("하나","둘","셋");
 		ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
 		//String error, List<String> list가 담겨있는, responseDTO객체를 반환
-		return response;
-	}
+		return response; //컨트롤러 메서드의 반환값을 http 응답의 본문(body)에 직접 포함 시킬 때 사용
+	}//주로 JSON, XML, 문자열과 같은 데이터를 클라이언트에게 반환 할 때 사용
 	
 	@GetMapping("/testResponseEntity")
 	public ResponseEntity<?> testResponseEntity(){
