@@ -8,90 +8,86 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korea.todo.model.ResponseDTO;
-import com.korea.todo.model.TestRequestBodyDTO;
 
 @RestController
 //데이터를 반환하는 컨트롤러로 사용
-//JSON이나 XML형식의 데이터 반환
-//@Controller, @ResponseBody 두개의 어노테이션의 결합
-//@ResponseBody는 메서드의 반환값을 HTTP ResponseBody로 직렬화해 클라이언트에게 전달
-@RequestMapping("test") // test 주소로 요청이 들어왔을 때 현재 컨트롤러로 들어올 수 있게 함
-//컨트롤러의 공통주소를 가짐
+//JSON이나 XML형식의 데이터를 반환한다.
+//@Controller, @ResponseBody 두개의 어노테이션의 결합이다.
+//@ResponseBody는 메서드의 반환값을 HTTP ResponseBody로 직렬화해 클라이언트에게 전달한다.
+@RequestMapping("test")//test주소로 요청이 들어왔을 때 현재 컨트롤러로 들어올 수 있게 해준다. 
 public class TestController {
-//주소 겹치지 말기 
-	@GetMapping("/testGetMapping") // GET 으로 요청이 들어왔을 때 요청을 받아서 아래 메서드를 ㅅ실행
+	
+	@GetMapping("/testGetMapping")//GET으로 요청이 들어왔을 때 요청을 받아서 아래 메서드를 실행해준다.
 	public String testController() {
 		return "Hello world";
 	}
-
-	// get으로 요청이 들어오고, 주소가 맞을 때 메서드 실행
-	@GetMapping("/test2") // 세부주소
-	public String testController2() {
-		return "안녕 안녕";
-	}
-
-	// 배열을 통해 여러개의 요청 URL를 받을 수 있다.
-	@GetMapping("/users/{id}")
-	public String getUserById(@PathVariable(name = "id", required = false) String userId) {
-		return "User Id : " + userId;//value = "이름" : 경로 변수 이름 명시, 이름이 같으면 생략가능
-	}						//required = t/f 해당 경로 필수 여부, 기본 true 딱히 false를 쓰진 않음
 	
-
+	//localhost:10000/users/1
+	@GetMapping("/users/{id}")
+	//배열을 통해 여러개의 요청 URI를 받을 수 있다.
+	public String getUserById(@PathVariable(name="id", required=false) String userId) {
+		return "User ID : " + userId;
+	}
+	
+	
 	@GetMapping("/users/{userId}/orders/{orderId}")
-	public String getOrderByUserAndOrderId(@PathVariable("userId") long id, @PathVariable("orderId") long orderId) {
+	public String getOrderByUserAndOrderId(@PathVariable("userId") Long id, 
+										   @PathVariable("orderId") Long orderId) {
 		return "User ID : " + id + ", Order ID : " + orderId;
 	}
-
-	// 정규식을 써서 변수 형식을 제한할 수 있다.
-	@GetMapping("/users/{userId:[0-9]{3}}")
-	public String getOrderByUser(@PathVariable("userId") long id) {
-		return "User ID : " + id; //ㄴ url 경로에서 값추출
-	}
-
-	// 쿼리스트링의 key와 매개변수의 변수명이 일치하면 value값을 안줘도 된다. -> GET일때만
-	// 일치한다면 말이지
+	
+	//정규식을 써서 변수 형식을 제한할 수 있다.
+//	@GetMapping("/users/{userId:[0-9]{3}}")
+//	public String getOrderByUser(@PathVariable("userId") Long id) {
+//		return "User ID : " + id;
+//	}
+	
+	
 	@GetMapping("/users")
-	// public String getUserById(@RequestParam(required=false) long id)
-	// 값을 반드시 넣지 않아도 에러가 나지는 않는다.
-	// public String getUserById(@RequestParam(defaultValue=0) long id)
-	// 값이 넘어오지 않았을 때, 기본값을 설정 할 수 있다.
-	public String getUserById(@RequestParam(value = "id", defaultValue = "0") long id) {
-		return "User ID : " + id; //value = "이름" : 파라미터의 이름 명시, 이름이 같으면 생략가능
-	}							//defaultvalue ="값" 요청에 파라미터가 없다면 기본값지정
-								//required = t/f 해당파라미터 필수 여부, 기본 true
+	//public String getUserById(@RequestParam Long id)
+	//쿼리스트링의 key와 매개변수의 변수명이 일치한다면 value값을 안줘도 된다.
+	//public String getUserById(@RequestParam(required=false Long id)
+	//값을 필수로 넣지 않아도 에러가 나지는 않는다.
+	//public String getUserById(@RequestParam(defaultValue="0" Long id)
+	//값이 넘어오지 않았을 때 기본값을 설정할 수 있다.
+	public String getUserById(@RequestParam(value = "id",defaultValue="0") Long userId) {
+		return "User ID : " + userId;
+	}
+	
 	@GetMapping("/search")
-	public String serch(@RequestParam("query") String query, @RequestParam("page") int page) {
-		return "Search query : " + query + " , page : " + page;
+	public String search(@RequestParam("query") String query,
+						 @RequestParam("page") int page) {
+		return "Search query : " + query + ", page : " + page;
 	}
 	
 	@PostMapping("/submitForm")
 	public String submitForm(@RequestParam("name") String name,
-							@RequestParam("email") String email) {
-		return "Form submitted : Name = " + name + ", Email = "+email;
+							 @RequestParam("email") String email) {
+		return "Form submitted : Name = " + name + ", Email = " + email;
 	}
 	
-	@GetMapping("/testRequestBody")
-	//JSON 형식으로 전달되는 데이터를 TestRequestBodyDTO형식으로 만들어서 넣어준다.
-	//{"id"=123, "message":"hello ?"} -> 키값이 일치해야함
-	public String testRequestBody(@RequestBody TestRequestBodyDTO dto) {
-		return "ID : "+dto.getId() + ", Message : "+dto.getMessage();
-	}//post,put요청은 url에 표시가 안된다. HTTP요청의 본문에 담긴 데이터를 
-	//자바 객체로 변환하여 컨트롤러 메서드의 매개변수로 전달 할 때 사용하는 어노테이션
-	//http 요청 본문 처리 : JSON이나 XML형식을 스프링이 자동으로 자바 객체로 변환
+//	@GetMapping("/testRequestBody")
+//	//JSON형식으로 전달되는 데이터를 TestRequestBodyDTO형식으로 만들어서
+//	//넣어준다.
+//	//{"id" : 123, "message":"hello ?"}
+//	public String testRequestBody(@RequestBody TestRequestBodyDTO dto) {
+//		return "ID : " + dto.getId() + ", Message : " + dto.getMessage();
+//	}
 	
-	@GetMapping("/testResponseBody") 
+
+	@GetMapping("/testResponseBody")
 	public ResponseDTO<String> testResponseBody(){
 		List<String> list = Arrays.asList("하나","둘","셋");
 		ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
-		//String error, List<String> list가 담겨있는, responseDTO객체를 반환
-		return response; //컨트롤러 메서드의 반환값을 http 응답의 본문(body)에 직접 포함 시킬 때 사용
-	}//주로 JSON, XML, 문자열과 같은 데이터를 클라이언트에게 반환 할 때 사용
+		//String error, List<String> list가 담겨있는
+		//ResponseDTO 객체를 반환
+		return response;
+	}
 	
 	@GetMapping("/testResponseEntity")
 	public ResponseEntity<?> testResponseEntity(){
@@ -100,6 +96,16 @@ public class TestController {
 		ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
 		return ResponseEntity.badRequest().body(response);
 	}
-	//ResponseDTO를 반환하는 것과 큰 차이는 없지만
-	//헤더와 HTTPStatus를 조작 할 수 있다는 점이 다르다
+	//ResponseDTO를 반환하는것과 비교했을 때 큰 차이는 없지만
+	//단지 헤더와 HTTPStatus를 조작할 수 있다는 점이 다르다.
 }
+
+
+
+
+
+
+
+
+
+
