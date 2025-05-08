@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,13 +41,21 @@ public class UserController {
 		return ResponseEntity.ok().body(users);
 	}
 	
+	//이메일로 찾기
 	@GetMapping("/users/{email}")
-	public ResponseEntity<?> findByEmail(@PathVariable(name="email", required=false) UserDTO dto){
+	public ResponseEntity<?> findByEmail(@PathVariable String email){
+		UserDTO  user = service.findByEmail(email);
+				
+		return ResponseEntity.ok(user);
+	}
+	
+	//id를 통해 이름 이메일 수정
+	@PutMapping
+	public ResponseEntity<?> updateUser(@RequestBody UserDTO dto){
 		UserEntity entity = UserDTO.toEntity(dto);
-		List<UserDTO> users = service.findByEmail(entity);
+		List<UserDTO> updateUser = service.updateUser(entity);
+		return ResponseEntity.ok(updateUser);
 		
-		
-		return ResponseEntity.ok(users);
 	}
 	
 }

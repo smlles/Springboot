@@ -1,6 +1,7 @@
 package com.korea.user.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,23 @@ public class UserService {
 	}
 	
 	//이메일로 조회
-	public List<UserDTO> findByEmail(String email){
-		
-		return null;
-		
+	public UserDTO findByEmail(String email){
+		UserEntity entity = repository.findByEmail(email);
+		return new UserDTO(entity);
+	}
+	
+	//id통해 이름 이메일 수정
+	public List<UserDTO> updateUser(UserEntity entity) {
+		Optional<UserEntity> userOptional =  repository.findById(entity.getId());
+		//사용자가 존재하면 업데이트 로직 실행
+		userOptional.ifPresent(userEntity -> {
+			//기존 데이터에 세팅
+			userEntity.setName(entity.getName());
+			userEntity.setEmail(entity.getEmail());
+			//새 데이터 저장
+			repository.save(userEntity);
+		});
+		return getAllUsers();
 	}
 	
 }
