@@ -46,6 +46,9 @@ public class ProductController {
 	
 	//조회 
 	//그런데 최소 금액을 전달 할 수도 있다.
+	//받아오는 주소라면 @RequestParam(required=false) -> localhost:10000/products?minPrice=5000 <- 쿼리스트링
+	//이게 PathVariable이라면 @PathVariable("/{minPrice}")-> localhost:10000/products/5000  <- 리소스(URL경로)
+	// 근데 이렇게 하면 문제가 5000이 의미하는게 뭐지? 모를 수 있다. 바깥에선 5000만 보이니까 
 	@GetMapping
 	public ResponseEntity<?> getAllProduct(
 			@RequestParam(required=false) Double minPrice){

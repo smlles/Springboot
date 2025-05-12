@@ -1,6 +1,6 @@
 package com.korea.todo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.korea.todo.model.UserEntity;
@@ -39,12 +39,12 @@ public class UserService {
 	}
 	
 	//주어진 username과 password를 이용해서 entity를 조회한다.
-	public UserEntity getByCredential(String username, String password) {
-		
-		return repository.findByUsernameAndPassword(username, password);
+	public UserEntity getByCredential(String username, String password,final PasswordEncoder encoder) {
+		final UserEntity originalUser = repository.findByUsername(username);
+		if(originalUser!=null && encoder.matches(password, originalUser.getPassword())) {
+			return originalUser;
+		}
+	
+		return null;
 	}
-	
-	
-	
-	
 }
