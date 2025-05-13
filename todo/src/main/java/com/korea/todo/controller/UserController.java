@@ -39,7 +39,7 @@ public class UserController {
 			UserEntity entity = UserEntity.builder()
 										
 										.username(dto.getUsername())
-										.password(dto.getPassword())
+										.password(passwordEncoder.encode(dto.getPassword()))
 										.build();
 			//UserEntity 객체를 service로 보내서 DB에 추가
 			 UserEntity responseUserEntity = service.create(entity);
