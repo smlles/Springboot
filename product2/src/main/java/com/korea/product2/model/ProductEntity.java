@@ -28,7 +28,7 @@ public class ProductEntity {
 	int productId; 
 	String productName;
 	int productCount;
-	int price;
+	int productPrice;
 	@CreationTimestamp //insert쿼리가 발생하면 현재 시간 값 적용
 	LocalDateTime creationTime;
 	@UpdateTimestamp //update쿼리가 발생하면 현재 시간 값 적용

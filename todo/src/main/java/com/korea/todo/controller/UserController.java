@@ -37,7 +37,6 @@ public class UserController {
 		//요청 본문에 포함된 UserDTO객체를 수신하여 처리
 		try {//userDTO기반으로 UserEntity 객체 생성하기)
 			UserEntity entity = UserEntity.builder()
-										
 										.username(dto.getUsername())
 										.password(passwordEncoder.encode(dto.getPassword()))
 										.build();

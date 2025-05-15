@@ -27,7 +27,7 @@ public class WebSecurityConfig {
 
    //HttpSecurity http
    //스프링 시큐리티에서 웹 보안 설정을 구성하기 위해 제공하는 보안 빌더 객체이다.
-   //이 객체에 여러 보안 옵션을 메서드 체이닝 방식으로 선언하면, 최종적으로
+   //이 객체에 여러 보안 옵션을 메서드 체이닝(.으로) 방식으로 선언하면, 최종적으로
    //필터체인이 생성된다.
    @Bean //Bean으로 등록해주는 어노테이션
    protected DefaultSecurityFilterChain securityFilterChain(

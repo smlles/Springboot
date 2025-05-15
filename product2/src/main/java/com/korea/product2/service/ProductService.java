@@ -22,18 +22,25 @@ public class ProductService {
 	public List<ProductDTO> create(ProductDTO dto){
 		//엔티티 전환
 		ProductEntity entity = ProductDTO.toEntity(dto);
-		//저장하기
+		//엔티티가 유효한지 검사
+		validate(entity);
+		//저장하기 JPA에 데이터를 전달 할 때에는 Entity타입이어야 한다.
 		repository.save(entity);
-		//반환
+		//DB에 추가하고 전체 정보 반환
 		return repository.findAll().stream().map(ProductDTO::new).collect(Collectors.toList());
 	}
 	
 	
 	
 	public List<ProductEntity> findAll(){
-		
-		
-		
 		return repository.findAll();
 	}
+	
+	private void validate(ProductEntity entity) {
+		if(entity==null) {
+			throw new RuntimeException("Entity cannot be null");
+		}
+	}
+	
+	
 }

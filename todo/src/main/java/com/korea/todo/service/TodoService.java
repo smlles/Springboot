@@ -52,6 +52,7 @@ public class TodoService {
 	
 	//조회하는 retrive메서드
 	public List<TodoEntity> retrive(String userId){
+		//select * from todo where userId = ~!~!;
 		return repository.findByUserId(userId);
 	}
 	

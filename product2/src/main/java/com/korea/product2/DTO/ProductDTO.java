@@ -17,7 +17,7 @@ public class ProductDTO {
 	int productId; 
 	String productName;
 	int productCount;
-	int price;
+	int productPrice;
 	LocalDateTime creationTime;
 	LocalDateTime updateTime;
 	
@@ -28,7 +28,7 @@ public class ProductDTO {
 		this.productId = entity.getProductId();
 		this.productName = entity.getProductName();
 		this.productCount = entity.getProductCount();
-		this.price = entity.getPrice();
+		this.productPrice = entity.getProductPrice();
 		this.creationTime = entity.getCreationTime();
 		this.updateTime = entity.getUpdateTime();
 	}
@@ -36,9 +36,9 @@ public class ProductDTO {
 	public static ProductEntity toEntity(ProductDTO dto) {
 		return ProductEntity.builder()
 				.productId(dto.getProductId())
-				.productName(dto.productName)
+				.productName(dto.getProductName())
 				.productCount(dto.getProductCount())
-				.price(dto.getPrice())
+				.productPrice(dto.getProductPrice())
 				.creationTime(dto.getCreationTime())
 				.updateTime(dto.getUpdateTime())
 				.build();
