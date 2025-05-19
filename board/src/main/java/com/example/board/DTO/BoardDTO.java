@@ -1,6 +1,9 @@
 package com.example.board.DTO;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import com.example.board.model.BoardEntity;
 
@@ -20,8 +23,7 @@ public class BoardDTO {
 	private Long id;
 	private String title;
 	private String author;
-	@CreatedDate
-	private String writingTime;
+	private LocalDateTime writingTime;
 	private String content;
 	
 	public static BoardDTO fromEntity(BoardEntity entity) {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.board.DTO.BoardDTO;
@@ -19,41 +20,53 @@ public class BoardService {
 
 	private final BoardRespository repository;
 
+	
+	//그냥 보기
 	public List<BoardEntity> findBoardList() {
-		return repository.findAll();
+		return repository.findAll(Sort.by(Sort.Direction.DESC, "writingTime"));
 	}
-
+	//그냥 쓰기
 	public List<BoardEntity> writePost(BoardDTO dto) {
 		BoardEntity entity = dto.toEntity(dto);
 		repository.save(entity);
-		return repository.findAll();
+		return findBoardList();
 	}
-
+	//id로 하나 보기
 	public Optional<BoardEntity> findById(Long id) {
 		return repository.findById(id);
+		
+//		public List<BoardDTO> findById(LongId){
 //		Optional<BoardEntity> option = repository.findById(id);
-//		BoardEntity entity = null;
+//		List<BoardDTO> = null;
+//		있으면 꺼내기
 //		if(option.isPresent()) {
-//		entity=	option.get();
+//		list = option.stream()
+//				.map(BoardDTO::fromEmtity
+//				.collect(Collectors.toList());
 //		}
-//		return Arrays.asList(entity);
+//		return list;
+		
 	}
-
-	public List<BoardEntity> deletePost(long id) {
+	//id 로 삭제하기
+	public boolean deletePost(long id) {
+		if(repository.existsById(id)) {
 		repository.deleteById(id);
-		return repository.findAll();
+		return true;
+		}else {
+		return false;
+		}
 	}
-
+	//id로 하나 수정하기
 	public BoardDTO updatePost(Long id, BoardDTO boardDTO) {
-		BoardEntity entity = repository.findById(id).orElseThrow(() -> new RuntimeException("게시글 없음"));
-
+//		BoardEntity entity = repository.findById(id).orElseThrow(() -> new RuntimeException("없는 게시물"));
+		//기존의 내용 꺼내기
+		BoardEntity entity = repository.findById(id).get();
+//		수정한 내용 반영
 		entity.setTitle(boardDTO.getTitle());
 		entity.setAuthor(boardDTO.getAuthor());
 		entity.setContent(boardDTO.getContent());
 		entity.setWritingTime(boardDTO.getWritingTime());
 
-		repository.save(entity);
-
-		return BoardDTO.fromEntity(entity);
+		return BoardDTO.fromEntity(repository.save(entity));
 	}
 }
