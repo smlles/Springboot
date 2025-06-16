@@ -45,8 +45,4 @@ public class NaverBookApiController {
              .retrieve()
              .bodyToMono(String.class);//응답 데이터를 Mono 객체로 받음;
     }
-    
-    
-    
-    
 }

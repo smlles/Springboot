@@ -66,7 +66,12 @@ public class WebSecurityConfig {
 	   //CORS 설정을 담기위한 객체 생성
       CorsConfiguration configuration = new CorsConfiguration();
       //허용할 출처(Origin)지정
-      configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+      configuration.setAllowedOrigins(
+    		  Arrays.asList(
+    				  "http://localhost:3000",
+    				  "http://app.springbootjyh.shop",
+    				  "https://app.springbootjyh.shop"
+    				  ));
       //허용할 메서드 지정
       configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
       //허용할 헤더 지정 ("*"은 모든 헤더를 허용하겠다는 것)

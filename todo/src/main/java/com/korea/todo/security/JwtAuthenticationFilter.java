@@ -40,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
          //토큰 검사하기. JWT이므로 인가 서버에 요청하지 않고도 검증 가능.
          if(token != null && !token.equalsIgnoreCase("null")) {
-
+					try {
+						
+				
             //userId 가져오기. 위조된 경우 예외처리한다.
             //TokenProvider에서 토큰을 검증하고 userId를 가져옴
             String userId = tokenProvider.validateAndGetUserId(token);
@@ -78,6 +80,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
             //인증을 완료한 후, 이 메서드를 사용하여 인증된 사용자 정보를 저장할 수 있다.
             SecurityContextHolder.setContext(securityContext);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
          }
       } catch (Exception e) {
          logger.error("Could not set user authentication in security context", e);
