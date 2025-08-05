@@ -11,9 +11,13 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data //lombok을 사용하여 getter,setter,tostring,equals,hashcode를 자동 생성
+//@Data //lombok을 사용하여 getter,setter,tostring,equals,hashcode를 자동 생성
+@Getter
+@Setter
 @Entity //JPA에서 엔티티 클래스로 사용할 것을 명시
 @Builder //lombok의 Builder패턴을 사용하여 객체를 생성할 수 있게 한다.
 @NoArgsConstructor //기본 생성자 생성
@@ -27,7 +31,7 @@ public class UserEntity {
 	//system-uuid라는 이름을 가진 어노테이션에게 맡긴다.
 	@GenericGenerator(name="system-uuid",strategy="uuid")
 	//uuid : 128비트 길이의 고유 식별자
-	private String id; //유저에게 고유하게 부여되는 ID, uuid로 생성되며 완전히` 고유한 값
+	private String uuid; //유저에게 고유하게 부여되는 ID, uuid로 생성되며 완전히` 고유한 값
 	
 	@Column(nullable=false,unique=true) //not null 제약
 	private String username; //아이디로 사용할 username, 이메일일수도 있고 문자열일수도 있다.

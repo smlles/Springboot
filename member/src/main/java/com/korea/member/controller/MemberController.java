@@ -59,6 +59,11 @@ public class MemberController {
 			ResponseDTO<MemberDTO> response = ResponseDTO.<MemberDTO>builder().data(list).build();
 			return ResponseEntity.ok(response);
 		}
+		
+//		@PostMapping
+//		public ResponseEntity<?> loginMember(@ReqestBody MemberDTO dto){
+//			MemberEntity entity = 
+//		}
 		//이메일을 통해 비밀번호 변경
 		@PutMapping("/{email}/password")
 		public ResponseEntity<?> updateMember(@PathVariable String email, @RequestBody MemberDTO dto){

@@ -32,7 +32,7 @@ public class UserController {
 	
 	//회원가입
 	//로그인을 해야 토큰을 주는것이지, 회원가입 했다고 주는건 아님
-	@PostMapping("/signup")
+	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody UserDTO dto){
 		//요청 본문에 포함된 UserDTO객체를 수신하여 처리
 		try {//userDTO기반으로 UserEntity 객체 생성하기)
@@ -45,7 +45,7 @@ public class UserController {
 			 
 			 //등록된 UserEntity 정보를 UserDTO로 변환하여 응답에 사용
 			UserDTO responseUserDTO = UserDTO.builder()
-											.id(responseUserEntity.getId())
+											.uuid(responseUserEntity.getUuid())
 											.username(responseUserEntity.getUsername())
 											.build();
 			
@@ -62,7 +62,7 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	//get으로 만들면,. 브라우저 주소창에 아이디,비밀번호가 노출될 수 있다.
 	public ResponseEntity<?> authenticate(@RequestBody UserDTO dto){
 		//요청 본문으로 전달된 UserDTO의 username과 password를 기반으로 유저를 조회
@@ -78,7 +78,7 @@ public class UserController {
 			
 			//인증에 성공한 경우, 유저 정보를 UserDTO로 변환하여 응답에 사용한다.
 			final UserDTO responseUserDTO = UserDTO.builder()
-											.id(user.getId())
+											.uuid(user.getUuid())
 											.username(user.getUsername())
 											.token(token)
 											.build();

@@ -9,14 +9,18 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor //엔티티클래스로 지정할때는 매개변수가 없는 생성자가 필요하다.
 //내부적으로 Class.newInstance() 과 비슷한 방식으로 객체를 만드는데
 //매개변수가 있는 생성자만 있으면 어떤 인자를 넘겨야하는지 몰라서 예외가 발생한다.
 @AllArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 //자바 클래스를 jpa엔티티로 지정하기 위해 사용한다.
 @Entity
 @Table(name="Todo") //Todo테이블을 찾아서 매핑을 하거나, 생성을 해준다.
